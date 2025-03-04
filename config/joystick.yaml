@@ -1,0 +1,18 @@
+joy_node:
+  ros__parameters:
+    device_id: 0
+    deadzone: 0.05
+    autorepeat_rate: 20.0
+
+teleop_twist_joy_node:
+  ros__parameters:
+    require_enable_button: false
+    enable_button: 5  # Przycisk RB na Xbox
+    axis_linear:
+      x: 1   # Lewy analog przód/tył
+    scale_linear:
+      x: 0.5  # Maksymalna prędkość jazdy
+    axis_angular:
+      yaw: 0  # Lewy analog lewo/prawo
+    scale_angular:
+      yaw: 1.0  # Szybkość obrotu
