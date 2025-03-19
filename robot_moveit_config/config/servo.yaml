@@ -1,0 +1,7 @@
+move_group_name: "arm"  # Nazwa Twojej grupy ruchu w MoveIt
+planning_frame: "base_link"  # Główny układ odniesienia robota
+robot_link_command_frame: "tcp_connector"  # Link końcowy, którym sterujesz
+command_in_type: "twist"  # Możesz zmienić na "position" jeśli chcesz sterować jointami
+scale:
+  linear: 0.1
+  rotational: 0.5
