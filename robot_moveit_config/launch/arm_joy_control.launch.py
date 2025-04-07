@@ -91,13 +91,14 @@ def generate_launch_description():
     # )
 
 
-    # robot_state_publisher = Node(
-    #     package='robot_state_publisher',
-    #     executable='robot_state_publisher',
-    #     name='robot_state_publisher',
-    #     parameters=[{'robot_description': moveit_config.robot_description}],
-    # )   
+    robot_state_publisher = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        parameters=[{'robot_description': moveit_config.robot_description}],
+    )   
     
+
 
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",

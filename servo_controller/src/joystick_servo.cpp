@@ -75,6 +75,7 @@
    D_PAD_X = 6,
    D_PAD_Y = 7
  };
+
  enum Button
  {
    A = 0,
@@ -88,6 +89,13 @@
    HOME = 8,
    LEFT_STICK_CLICK = 9,
    RIGHT_STICK_CLICK = 10
+ };
+
+ enum ControlMode
+ {
+   JOINT_SPACE,
+   GRIPPER_BASE,
+   GRIPPER_EEF
  };
  
  // Some axes have offsets (e.g. the default trigger position is 1.0 not 0)
@@ -110,7 +118,7 @@
  {
    // Give joint jogging priority because it is only buttons
    // If any joint jog command is requested, we are only publishing joint commands
-   if (buttons[A] || buttons[B] || buttons[X] || buttons[Y] || axes[D_PAD_X] || axes[D_PAD_Y])
+   if (buttons[A] || buttons[B] || buttons[X] || buttons[Y] || axes[D_PAD_X] || axes[D_PAD_Y] || axes[RIGHT_STICK_X] || axes[RIGHT_STICK_Y])
    {
      // Map the D_PAD to the proximal joints
      joint->joint_names.push_back("joint_1");
@@ -123,6 +131,12 @@
      joint->velocities.push_back(buttons[B] - buttons[X]);
      joint->joint_names.push_back("joint_5");
      joint->velocities.push_back(buttons[Y] - buttons[A]);
+
+     joint->joint_names.push_back("joint_3");
+     joint->velocities.push_back(axes[LEFT_STICK_Y]);  // Use left stick Y for joint_3 movement
+     joint->joint_names.push_back("joint_4");
+     joint->velocities.push_back(axes[RIGHT_STICK_Y]);  // Use right stick Y for joint_4 movement
+
      return false;
    }
  
@@ -150,10 +164,16 @@
   */
  void updateCmdFrame(std::string& frame_name, const std::vector<int>& buttons)
  {
-   if (buttons[CHANGE_VIEW] && frame_name == EEF_FRAME_ID)
-     frame_name = BASE_FRAME_ID;
-   else if (buttons[MENU] && frame_name == BASE_FRAME_ID)
-     frame_name = EEF_FRAME_ID;
+    if (buttons[CHANGE_VIEW] && frame_name == EEF_FRAME_ID)
+      frame_name = BASE_FRAME_ID;
+      control_mode_ =  GRIPPER_EEF
+    else if (buttons[CHANGE_VIEW] && frame_name == BASE_FRAME_ID)
+      frame_name = EEF_FRAME_ID;
+      control_mode_ = GRIPPER_BASE
+    else if (buttons[MENU]):
+      frame_name = BASE_FRAME_ID;
+      control_mode_ = JOINT_SPACE;
+
  }
  
  namespace servo_controller
@@ -164,6 +184,10 @@
    JoyToServoPub(const rclcpp::NodeOptions& options)
      : Node("joy_to_twist_publisher", options), frame_to_publish_(BASE_FRAME_ID)
    {
+
+
+     control_mode_ = JOINT_SPACE;  // Domyślnie zaczynamy od sterowania w przestrzeni złącz
+
      // Setup pub/sub
      joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
          JOY_TOPIC, rclcpp::SystemDefaultsQoS(),
@@ -227,6 +251,10 @@
        collision_pub_thread_.join();
    }
  
+
+
+
+   
    void joyCB(const sensor_msgs::msg::Joy::ConstSharedPtr& msg)
    {
      // Create the messages we might publish
@@ -239,17 +267,18 @@
      // Convert the joystick message to Twist or JointJog and publish
      if (convertJoyToCmd(msg->axes, msg->buttons, twist_msg, joint_msg))
      {
+      if (control_mode_ == JOINT_SPACE){
+        joint_msg->header.stamp = this->now();
+        joint_msg->header.frame_id = "tcp_connector";  // układ odniesienia
+        joint_pub_->publish(std::move(joint_msg));
+      }
+      else{
        // publish the TwistStamped
-       twist_msg->header.frame_id = frame_to_publish_;
-       twist_msg->header.stamp = this->now();
-       twist_pub_->publish(std::move(twist_msg));
-     }
-     else
-     {
-       // publish the JointJog
-       joint_msg->header.stamp = this->now();
-       joint_msg->header.frame_id = "tcp_connector";  // układ odniesienia
-       joint_pub_->publish(std::move(joint_msg));
+        twist_msg->header.frame_id = frame_to_publish_;
+        twist_msg->header.stamp = this->now();
+        twist_pub_->publish(std::move(twist_msg));
+      }
+
      }
    }
  
