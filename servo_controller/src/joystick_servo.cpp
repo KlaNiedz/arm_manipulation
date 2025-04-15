@@ -165,12 +165,15 @@
  void updateCmdFrame(std::string& frame_name, const std::vector<int>& buttons)
  {
     if (buttons[CHANGE_VIEW] && frame_name == EEF_FRAME_ID)
+      RCLCPP_INFO(this->get_logger(), "Przełączono na tryb: GRIPPER_BASE");
       frame_name = BASE_FRAME_ID;
       control_mode_ =  GRIPPER_EEF
     else if (buttons[CHANGE_VIEW] && frame_name == BASE_FRAME_ID)
+      RCLCPP_INFO(this->get_logger(), "Przełączono na tryb: GRIPPER_EEF");
       frame_name = EEF_FRAME_ID;
       control_mode_ = GRIPPER_BASE
     else if (buttons[MENU]):
+      RCLCPP_INFO(this->get_logger(), "Przełączono na tryb: JOINT_BASE");
       frame_name = BASE_FRAME_ID;
       control_mode_ = JOINT_SPACE;
 
