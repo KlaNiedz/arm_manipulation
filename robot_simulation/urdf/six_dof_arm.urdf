@@ -108,7 +108,7 @@
     <parent link="link_2"/>
     <child link="link_3"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-2.50" upper="2.50" effort="1000.0" velocity="0.5"/>
+    <limit lower="-1.58" upper="1.58" effort="1000.0" velocity="0.5"/>
     <origin xyz="0.04573 0 0.495" rpy="1.57079632679 0 0"/>
   </joint>
 
@@ -170,7 +170,7 @@
   </joint>
 
 
-  <link name="gripper">
+  <link name="tcp_connector">
     <visual>
       <geometry>
         <!-- <box size="0.01 0.01 0.1"/> -->
@@ -192,7 +192,7 @@
   <joint name="joint_6" type="revolute">
     <origin xyz="0 0.0 0.04" rpy="0 0 0"/>
     <parent link="link_5"/>
-    <child link="gripper"/>
+    <child link="tcp_connector"/>
     <axis xyz="0 0 1"/>
     <limit lower="-3.14" upper="3.14" effort="1000.0" velocity="0.5"/>
   </joint>

@@ -91,12 +91,12 @@ def generate_launch_description():
     # )
 
 
-    robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        parameters=[{'robot_description': moveit_config.robot_description}],
-    )   
+    # robot_state_publisher = Node(
+    #     package='robot_state_publisher',
+    #     executable='robot_state_publisher',
+    #     name='robot_state_publisher',
+    #     parameters=[{'robot_description': moveit_config.robot_description}],
+    # )   
     
 
 
@@ -118,11 +118,11 @@ def generate_launch_description():
         arguments=["arm_controller", "-c", "/controller_manager"],
     )
 
-    gripper_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["gripper_controller", "-c", "/controller_manager"],
-    )
+    # gripper_controller_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner",
+    #     arguments=["gripper_controller", "-c", "/controller_manager"],
+    # )
 
     # Launch as much as possible in components
     container = ComposableNodeContainer(
@@ -194,11 +194,11 @@ def generate_launch_description():
         output="screen",
     )
 
-    topic_convertor = Node(
-        package="gripper_joint_state",
-        executable="convertor.py",
-        output='screen'
-    )
+    # topic_convertor = Node(
+    #     package="gripper_joint_state",
+    #     executable="convertor.py",
+    #     output='screen'
+    # )
 
 
     return LaunchDescription(
@@ -208,11 +208,11 @@ def generate_launch_description():
             # twist_stamper,
             joint_state_broadcaster_spawner,
             arm_controller_spawner,
-            gripper_controller_spawner,
+            # gripper_controller_spawner,
             # robot_state_publisher,
             servo_node,
             container,
-            topic_convertor,
+            # topic_convertor,
 
         ]
     )

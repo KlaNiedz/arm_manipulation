@@ -59,22 +59,6 @@
                 </state_interface>
                 <state_interface name="velocity"/>
             </joint>
-            <joint name="joint_gripper_left">
-                <command_interface name="position"/>
-                <command_interface name="velocity"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['joint_gripper_left']}</param>
-                </state_interface>
-                <state_interface name="velocity"/>
-            </joint>
-            <joint name="joint_gripper_right">
-                <command_interface name="position"/>
-                <command_interface name="velocity"/>
-                <state_interface name="position">
-                  <param name="initial_value">${initial_positions['joint_gripper_right']}</param>
-                </state_interface>
-                <state_interface name="velocity"/>
-            </joint>
 
         </ros2_control>
     </xacro:macro>

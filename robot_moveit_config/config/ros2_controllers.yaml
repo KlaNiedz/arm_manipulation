@@ -2,19 +2,14 @@
 controller_manager:
   ros__parameters:
     update_rate: 100  # Hz
-    lock_memory: false
-    initial_positions_file: $(find robot_moveit_config)/config/initial_positions.yaml
 
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
-    gripper_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-
-
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+
 
 arm_controller:
   ros__parameters:
@@ -25,20 +20,6 @@ arm_controller:
       - joint_4
       - joint_5
       - joint_6
-    command_interfaces:
-      - position
-      - velocity
-    state_interfaces:
-      - position
-      - velocity
-    initial_position: [0.0, -0.2881, 1.8, 0.0, 0.0086, 0.0, 0.0, 0.0] 
-
-
-gripper_controller:
-  ros__parameters:
-    joints:
-      - joint_gripper_left
-      - joint_gripper_right
     command_interfaces:
       - position
       - velocity

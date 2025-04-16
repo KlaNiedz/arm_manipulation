@@ -5,9 +5,9 @@ moveit_setup_assistant_config:
   srdf:
     relative_path: config/six_dof_arm.srdf
   package_settings:
-    author_name: Klaudia
+    author_name: Klaudia Niedziałkowska
     author_email: klaudianiedzi@gmail.com
-    generated_timestamp: 1739020156
+    generated_timestamp: 1744752921
   control_xacro:
     command:
       - position
